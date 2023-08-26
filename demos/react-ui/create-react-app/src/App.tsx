@@ -10,6 +10,7 @@ import {
     WalletSelectButton,
 } from '@tronweb3/tronwallet-adapter-react-ui';
 import toast from 'react-hot-toast';
+// import bigNumber from 'bignumber.js';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Alert} from '@mui/material';
 import {BitKeepAdapter, OkxWalletAdapter, TokenPocketAdapter, TronLinkAdapter} from '@tronweb3/tronwallet-adapters';
 import {WalletConnectAdapter} from '@tronweb3/tronwallet-adapter-walletconnect';
@@ -23,96 +24,6 @@ const rows = [
     {name: 'Select Wallet Button', reactUI: WalletSelectButton},
     {name: 'Multi Action Button', reactUI: WalletActionButton},
 ];
-
-const abi_1 = {
-    "entrys": [{
-        "outputs": [{"type": "string"}],
-        "constant": true,
-        "name": "name",
-        "stateMutability": "view",
-        "type": "function"
-    }, {
-        "outputs": [{"type": "bool"}],
-        "inputs": [{"name": "spender", "type": "address"}, {"name": "value", "type": "uint256"}],
-        "name": "approve",
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }, {
-        "outputs": [{"type": "uint256"}],
-        "constant": true,
-        "name": "totalSupply",
-        "stateMutability": "view",
-        "type": "function"
-    }, {
-        "outputs": [{"type": "bool"}],
-        "inputs": [
-            {"name": "sender", "type": "address"},
-            {"name": "recipient", "type": "address"},
-            {"name": "amount", "type": "uint256"}
-        ],
-        "name": "transferFrom",
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }, {
-        "outputs": [{"type": "uint8"}],
-        "constant": true,
-        "name": "decimals",
-        "stateMutability": "view",
-        "type": "function"
-    }, {
-        "outputs": [{"type": "bool"}],
-        "inputs": [{"name": "spender", "type": "address"}, {"name": "addedValue", "type": "uint256"}],
-        "name": "increaseAllowance",
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }, {
-        "outputs": [{"type": "uint256"}],
-        "constant": true,
-        "inputs": [{"name": "account", "type": "address"}],
-        "name": "balanceOf",
-        "stateMutability": "view",
-        "type": "function"
-    }, {
-        "outputs": [{"type": "string"}],
-        "constant": true,
-        "name": "symbol",
-        "stateMutability": "view",
-        "type": "function"
-    }, {
-        "outputs": [{"type": "bool"}],
-        "inputs": [{"name": "spender", "type": "address"}, {"name": "subtractedValue", "type": "uint256"}],
-        "name": "decreaseAllowance",
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }, {
-        "outputs": [{"type": "bool"}],
-        "inputs": [{"name": "recipient", "type": "address"}, {"name": "amount", "type": "uint256"}],
-        "name": "transfer",
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }, {
-        "outputs": [{"type": "uint256"}],
-        "constant": true,
-        "inputs": [{"name": "owner", "type": "address"}, {"name": "spender", "type": "address"}],
-        "name": "allowance",
-        "stateMutability": "view",
-        "type": "function"
-    }, {"stateMutability": "Nonpayable", "type": "Constructor"}, {
-        "inputs": [{
-            "indexed": true,
-            "name": "from",
-            "type": "address"
-        }, {"indexed": true, "name": "to", "type": "address"}, {"name": "value", "type": "uint256"}],
-        "name": "Transfer",
-        "type": "Event"
-    }, {
-        "inputs": [{"indexed": true, "name": "owner", "type": "address"}, {
-            "indexed": true,
-            "name": "spender",
-            "type": "address"
-        }, {"name": "value", "type": "uint256"}], "name": "Approval", "type": "Event"
-    }]
-};
 
 /**
  * wrap your app content with WalletProvider and WalletModalProvider
@@ -225,7 +136,7 @@ function SignDemo() {
     const [signedMessage, setSignedMessage] = useState('');
     const receiver = 'TMDKznuDWaZwfZHcM61FVFstyYNmK6Njk1';
 
-    const abi = [abi_1]
+    // const abi = []
     const contractAddress = 'TVuXsrgv9bG8SvbarX94awSg9sr32m7st7'
     const [open, setOpen] = useState(false);
 
@@ -236,13 +147,184 @@ function SignDemo() {
 
     //example 1
     async function totalSupplyContract() {
+        // @ts-ignore
         // let abi = [...];
-        let instance = await tronWeb.contract(abi, contractAddress);
+        // let instance = await tronWeb.contract(abi, contractAddress);
+        // console.log("instance:", instance);
+        //
+        // let result = await instance.balanceOf('TJc1TtL3u1zhjk2nfbhTyYNZSot4QJwu9y').call();
+        // console.log("result:", result.toString(10));
 
-        console.log(instance);
+        //example 1
+        // let instance =await tronWeb.contract([{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}],"TREwN2qRkME9TyQUz8dG6HfjEyKGMPHAS5")
+        // let res = await instance.totalSupply().call({_isConstant:true})
 
-        // let res = await instance.totalSupply().call();
+        let abi = [{
+            "stateMutability": "Nonpayable",
+            "type": "Constructor"
+        }, {
+            "outputs": [{"type": "bool"}],
+            "inputs": [{"name": "btcAmount", "type": "uint256"}],
+            "name": "BtcToEvf",
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "bool"}],
+            "inputs": [{"name": "evfAmount", "type": "uint256"}],
+            "name": "EvfToBtc",
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "address"}],
+            "name": "btcAddress",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "uint256"}],
+            "name": "btcBalance",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "address"}],
+            "name": "btcToken",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "address"}],
+            "name": "evfAddress",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "uint256"}],
+            "name": "evfBalance",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "uint256"}],
+            "name": "evfPrice",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "address"}],
+            "name": "evfToken",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "uint256"}],
+            "name": "exchangeEvfNum",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "uint256"}],
+            "name": "getMaxTransferAmount",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "uint256"}],
+            "name": "initTimestamp",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "uint256"}],
+            "name": "outputEvfNum",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "address"}],
+            "name": "owner",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "inputs": [
+                {"name": "_evfAddress", "type": "address"},
+                {"name": "_btcAddress", "type": "address"},
+                {"name": "_targetAddress", "type": "address"}],
+            "name": "set",
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "address"}],
+            "name": "targetAddress",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "uint256"}],
+            "name": "tokensPerDay",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "uint256"}],
+            "name": "transferInterval",
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "outputs": [{"type": "bool"}],
+            "name": "transferTokens",
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }];
+
+        let result
+        // let result2
+
+        let contract = await tronWeb.contract(abi, contractAddress);
+        console.log('  contract: ', contract);
+
+        result = await contract.evfPrice().call();
+        console.log(' evf 价格: ', parseInt(result.toString(10)) / 100000000);
+
+
+        result = await contract.exchangeEvfNum().call();
+        console.log(' evf 兑换数量: ', parseInt(result.toString(10)) / 100000000);
+
+
+        // contract = await tronWeb.contract(abi, contractAddress);
+        // result = await contract.EvfToBtc(1 * 100000000);
+        // console.log(' evf contract : ', contract);
+        // console.log(' evf result   : ', result);
+        // result2 = await result.send();
+
+        // const signedTx = await tronWeb.trx.sign(tx.transaction);
+
+        const functionSelector = 'EvfToBtc(uint256)';
+        const parameter = [{type: 'uint256', value: 1 * 100000000}]
+        const tx = await tronWeb.transactionBuilder.triggerSmartContract(contractAddress, functionSelector, {}, parameter);
+        console.log(' evf tx       : ', tx);
+        const signedTx = await signTransaction(tx.transaction);
+        console.log(' evf signedTx : ', signedTx);
+        result = await tronWeb.trx.sendRawTransaction(signedTx);
+
+        console.log(' evf EvfToBtc : ', result);
+
+        // let contract = await tronWeb.contract().at(contractAddress);
+        // console.log('contract: ', contract);
+        //
+        // // const decimals = 18;
+        // // const input = 999;
+        // // const amount = tronWeb.toBigInt(999)
+        //
+
+        // // let result3
+        //
+        // // result = await contract.evfPrice();
+        // // console.log('  evfPrice: ', result);
+        // // console.log('  contract.address: ', contract.address);
+        // //
+        // // result2 = await result.call();
+        // // console.log('  evfPrice2: ', result2);
+        // //
+        // // result3 = await result2.call;
+        // // console.log('  evfPrice3: ', result3);
+        //
+        //
+        // result = await contract.EvfToBtc(10000000000);
+        // console.log('  EvfToBtc1: ', result);
+        // result2 = await result.send();
+        // console.log('  EvfToBtc2: ', result2);
+
+        // let res = await contract.evfPrice().call();
         // console.log(res);
+        return result
     }
 
 
@@ -250,17 +332,21 @@ function SignDemo() {
         console.log(" receiver:", receiver)
         console.log(" address:", address)
 
-        await totalSupplyContract()
+        // eslint-disable-next-line eqeqeq
+        if (address != "") {
+            tronWeb.setAddress(address);
+        }
 
-        // triggercontract();
+        let res2 = await totalSupplyContract()
+        console.log(" res2: ", res2);
 
-        const transaction = await tronWeb.transactionBuilder.sendTrx(receiver, tronWeb.toSun(0.001), address);
-
-        console.log(" transaction:", transaction)
-
-        const signedTransaction = await signTransaction(transaction);
-        // const signedTransaction = await tronWeb.trx.sign(transaction);
-        await tronWeb.trx.sendRawTransaction(signedTransaction);
+        // const transaction = await tronWeb.transactionBuilder.sendTrx(receiver, tronWeb.toSun(0.001), address);
+        //
+        // console.log(" transaction:", transaction)
+        //
+        // const signedTransaction = await signTransaction(transaction);
+        // // const signedTransaction = await tronWeb.trx.sign(transaction);
+        // await tronWeb.trx.sendRawTransaction(signedTransaction);
         setOpen(true);
     }
 
